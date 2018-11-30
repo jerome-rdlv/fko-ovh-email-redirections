@@ -1,0 +1,16 @@
+{
+    "name": "ovh-email-redirections",
+    "description": "Manage email redirection of choosen domains in WordPress settings pages",
+    "homepage": "https://gitlab.rue-de-la-vieille.fr/fantaskao/ovh-email-redirections.git",
+    "type": "wordpress-muplugin",
+    "license": "MIT",
+    "authors": [
+	{
+	    "name"    : "Jérôme Mulsant",
+	    "homepage": "https://rue-de-la-vieille.fr/"
+	}
+    ],
+    "require": {
+        "php": ">=5.4"
+    }
+}

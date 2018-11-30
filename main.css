@@ -1,0 +1,20 @@
+td.no-padding {
+    margin: 0;
+    padding-left: 0;
+    vertical-align: top;
+}
+textarea {
+    resize: vertical;
+}
+.one-line {
+    align-items: center;
+    display: flex;
+    flex-flow: row nowrap;
+}
+.one-line input.regular-text {
+    min-width: 6em;
+    width: auto;
+}
+.one-line span {
+    color: #777;
+}
