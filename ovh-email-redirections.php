@@ -332,6 +332,9 @@ class OvhEmailAliases
      */
     public function get_domains()
     {
+        if (!$this->ak || !$this->as || !$this->ck) {
+            return null;
+        }
         $api_domains = $this->request('GET', self::API_DOMAIN_PATH);
         $selected_domains = get_option(sprintf(OvhEmailAliases::OPTION_FORMAT, 'domains'));
 
@@ -346,6 +349,9 @@ class OvhEmailAliases
         foreach ($api_domains as $domain) {
             $domains[$domain] = isset($selected_domains[$domain]);
         }
+        
+        ksort($domains);
+        
         return $domains;
     }
 
@@ -384,7 +390,7 @@ class OvhEmailAliases
     {
         $domains = get_option(sprintf(OvhEmailAliases::OPTION_FORMAT, 'domains'));
         if (!$domains) {
-            return new WP_Error(1, __('Aucun domaine', self::TEXTDOMAIN));
+            return null;
         }
         $redirections = [];
         foreach ($domains as $domain => $enabled) {

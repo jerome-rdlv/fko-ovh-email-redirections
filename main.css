@@ -6,15 +6,16 @@ td.no-padding {
 textarea {
     resize: vertical;
 }
-.one-line {
+.new-from {
     align-items: center;
     display: flex;
     flex-flow: row nowrap;
+    margin-bottom: 10px !important;
 }
-.one-line input.regular-text {
+.new-from input.regular-text {
     min-width: 6em;
     width: auto;
 }
-.one-line span {
+.new-from span {
     color: #777;
 }

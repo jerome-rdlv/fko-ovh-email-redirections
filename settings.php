@@ -15,37 +15,26 @@
             <?php endforeach ?>
         <?php endif ?>
 
-        <h2><?php _e('Redirections', OvhEmailAliases::TEXTDOMAIN) ?></h2>
-
-        <p>
-            <?php _e('Une adresse email par ligne.', OvhEmailAliases::TEXTDOMAIN) ?>
-        </p>
-
-        <form method="post">
-            <?php echo wp_nonce_field('ovh-email-aliases') ?>
-            <table class="form-table">
-                <?php $domains = $this->get_redirections() ?>
-                <?php if (is_wp_error($domains)): ?>
-                    <tr>
-                        <td colspan="2" class="no-padding">
-                            <?php $this->print_error($domains) ?>
-                        </td>
-                    </tr>
-                <?php else: ?>
-                    <?php foreach ($domains as $domain => $redirections): ?>
-                        <?php if (is_wp_error($redirections)): ?>
-                            <tr>
-                                <td colspan="2" class="no-padding">
-                                    <?php $this->print_error($redirections) ?>
-                                </td>
-                            </tr>
-                        <?php else: ?>
-                            <?php if (count($domains) > 1): ?>
-                                <tr>
-                                    <th><h3><?php echo $domain ?></h3></th>
-                                    <td></td>
-                                </tr>
-                            <?php endif ?>
+        <?php $domains = $this->get_redirections() ?>
+        <?php if (is_wp_error($domains)): ?>
+            <?php $this->print_error($domains) ?>
+        <?php elseif ($domains): ?>
+            <form method="post">
+                <?php if (count($domains) < 2): ?>
+                    <h2><?php _e('Redirections', OvhEmailAliases::TEXTDOMAIN) ?></h2>
+                <?php endif ?>
+                <p>
+                    <?php _e('Une adresse email par ligne.', OvhEmailAliases::TEXTDOMAIN) ?>
+                </p>
+                <?php echo wp_nonce_field('ovh-email-aliases') ?>
+                <?php foreach ($domains as $domain => $redirections): ?>
+                    <?php if (is_wp_error($redirections)): ?>
+                        <?php $this->print_error($redirections) ?>
+                    <?php else: ?>
+                        <?php if (count($domains) > 1): ?>
+                            <h2><?php echo $domain ?></h2>
+                        <?php endif ?>
+                        <table class="form-table">
                             <?php foreach ($redirections as $from => $to): ?>
                                 <?php list($user) = explode('@', $from) ?>
                                 <tr>
@@ -67,22 +56,23 @@
                                 </tr>
                             <?php endforeach ?>
                             <tr>
-                                <td class="no-padding">
+                                <th scope="row">
+                                    <?php _e('nouvelle redirection', OvhEmailAliases::TEXTDOMAIN) ?>
+                                </th>
+                                <td>
                                     <label for="<?php echo 'redirection-' . $domain . '-new-from' ?>">
-                                        <?php _e('Nouvelle redirection de :', OvhEmailAliases::TEXTDOMAIN) ?>
+                                        <?php _e('de', OvhEmailAliases::TEXTDOMAIN) ?>
                                     </label>
-                                    <div class="one-line">
+                                    <p class="new-from">
                                         <input class="regular-text code" type="text"
                                                name="<?php echo 'new[' . $domain . '][from]' ?>"
                                                id="<?php echo 'redirection-' . $domain . '-new-from' ?>">
                                         <span class="code">
                                            <?php echo '@' . $domain ?>
                                         </span>
-                                    </div>
-                                </td>
-                                <td>
+                                    </p>
                                     <label for="<?php echo 'redirection-' . $domain . '-new-to' ?>">
-                                        <?php _e('vers :', OvhEmailAliases::TEXTDOMAIN) ?>
+                                        <?php _e('vers', OvhEmailAliases::TEXTDOMAIN) ?>
                                     </label><br>
                                     <textarea class="regular-text code"
                                               rows="2"
@@ -90,21 +80,20 @@
                                               id="<?php echo 'redirection-' . $domain . '-new-to' ?>"></textarea>
                                 </td>
                             </tr>
-                        <?php endif ?>
-                    <?php endforeach ?>
-                <?php endif ?>
-            </table>
-            <p class="submit">
-                <input type="submit" value="<?php _e('Enregistrer', OvhEmailAliases::TEXTDOMAIN) ?>"
-                       name="save" class="button-primary">
+                        </table>
+                    <?php endif ?>
+                <?php endforeach ?>
+                <p class="submit">
+                    <input type="submit" value="<?php _e('Enregistrer', OvhEmailAliases::TEXTDOMAIN) ?>"
+                           name="save" class="button-primary">
+                </p>
+            </form>
+        <?php else: ?>
+            <h2><?php _e('Redirections', OvhEmailAliases::TEXTDOMAIN) ?></h2>
+            <p>
+                <?php _e('Vous devez d’abord renseigner les paramètres ci-dessous avant de pouvoir gérer vos redirections.', OvhEmailAliases::TEXTDOMAIN) ?>
             </p>
-        </form>
-
-        <?php /*
-        <p>
-            <?php _e('Vous devez d’abord renseigner les paramètres ci-dessous avant de pouvoir gérer vos redirections', OvhEmailAliases::TEXTDOMAIN) ?>
-        </p>
-        */ ?>
+        <?php endif ?>
 
         <h2><?php _e('Paramètres d’API', OvhEmailAliases::TEXTDOMAIN) ?></h2>
 
@@ -155,15 +144,19 @@
                         </button>
                     </td>
                 </tr>
-                <tr>
-                    <th scope="row">
-                        <label for="domains"><?php _e('Domaines', OvhEmailAliases::TEXTDOMAIN) ?></label>
-                    </th>
-                    <td>
-                        <?php $domains = $this->get_domains() ?>
-                        <?php if (is_wp_error($domains)): ?>
+                <?php $domains = $this->get_domains() ?>
+                <?php if (is_wp_error($domains)): ?>
+                    <tr>
+                        <td colspan="2" class="no-padding">
                             <?php $this->print_error($domains) ?>
-                        <?php elseif ($domains): ?>
+                        </td>
+                    </tr>
+                <?php elseif ($domains): ?>
+                    <tr>
+                        <th scope="row">
+                            <label for="domains"><?php _e('Domaines', OvhEmailAliases::TEXTDOMAIN) ?></label>
+                        </th>
+                        <td>
                             <?php foreach ($domains as $domain => $checked): ?>
                                 <p>
                                     <input type="checkbox"
@@ -173,9 +166,9 @@
                                     <label for="domain-<?php echo $domain ?>"><?php echo $domain ?></label>
                                 </p>
                             <?php endforeach ?>
-                        <?php endif ?>
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
+                <?php endif ?>
                 </tbody>
             </table>
             <p class="submit">
