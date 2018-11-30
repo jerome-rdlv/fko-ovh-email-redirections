@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: OVH Email Redirections
-Plugin URI: https://gitlab.rue-de-la-vieille.fr/fantaskao/ovh-email-redirections.git
+Plugin URI: https://github.com/jerome-rdlv/ovh-email-redirections
 Description: Manage email redirection of choosen domains in WordPress settings pages
 Author: Jérôme Mulsant
 Version: 0.1
