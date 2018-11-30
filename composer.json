@@ -1,7 +1,7 @@
 {
-    "name": "ovh-email-redirections",
+    "name": "fko/ovh-email-redirections",
     "description": "Manage email redirection of choosen domains in WordPress settings pages",
-    "homepage": "https://github.com/jerome-rdlv/ovh-email-redirections",
+    "homepage": "https://github.com/jerome-rdlv/fko-ovh-email-redirections",
     "type": "wordpress-muplugin",
     "license": "MIT",
     "authors": [
