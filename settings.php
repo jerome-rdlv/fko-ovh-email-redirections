@@ -4,16 +4,19 @@
     <div class="wrap">
         <h1><?php echo $title ?></h1>
 
-        <?php if (!empty($_REQUEST['error'])): ?>
-            <div class="notice notice-error">
-                <p>
-                    <?php echo $_REQUEST['error'] ?>
-                </p>
-            </div>
+        <?php $message_list = $this->get_messages() ?>
+        <?php if (!empty($message_list)): ?>
+            <?php foreach ($message_list as $type => $messages): ?>
+                <div class="notice notice-<?php echo $type ?>">
+                    <?php foreach ($messages as $message): ?>
+                        <p><?php echo $message ?></p>
+                    <?php endforeach ?>
+                </div>
+            <?php endforeach ?>
         <?php endif ?>
 
         <h2><?php _e('Redirections', OvhEmailAliases::TEXTDOMAIN) ?></h2>
-        
+
         <p>
             <?php _e('Une adresse email par ligne.', OvhEmailAliases::TEXTDOMAIN) ?>
         </p>
@@ -43,30 +46,6 @@
                                     <td></td>
                                 </tr>
                             <?php endif ?>
-                            <tr>
-                                <td class="no-padding">
-                                    <label for="<?php echo 'redirection-' . $domain . '-new-from' ?>">
-                                        <?php _e('nouvelle redirection de :', OvhEmailAliases::TEXTDOMAIN) ?>
-                                    </label>
-                                    <div class="one-line">
-                                        <input class="regular-text code" type="text"
-                                               name="<?php echo 'new[' . $domain . '][from]' ?>"
-                                               id="<?php echo 'redirection-' . $domain . '-new-from' ?>">
-                                        <span class="code">
-                                           <?php echo '@' . $domain ?>
-                                        </span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <label for="<?php echo 'redirection-' . $domain . '-new-to' ?>">
-                                        <?php _e('vers :', OvhEmailAliases::TEXTDOMAIN) ?>
-                                    </label><br>
-                                    <textarea class="regular-text code"
-                                              rows="2"
-                                              name="<?php echo 'new[' . $domain . '][to]' ?>"
-                                              id="<?php echo 'redirection-' . $domain . '-new-to' ?>"></textarea>
-                                </td>
-                            </tr>
                             <?php foreach ($redirections as $from => $to): ?>
                                 <?php list($user) = explode('@', $from) ?>
                                 <tr>
@@ -87,6 +66,30 @@
                                     </td>
                                 </tr>
                             <?php endforeach ?>
+                            <tr>
+                                <td class="no-padding">
+                                    <label for="<?php echo 'redirection-' . $domain . '-new-from' ?>">
+                                        <?php _e('Nouvelle redirection de :', OvhEmailAliases::TEXTDOMAIN) ?>
+                                    </label>
+                                    <div class="one-line">
+                                        <input class="regular-text code" type="text"
+                                               name="<?php echo 'new[' . $domain . '][from]' ?>"
+                                               id="<?php echo 'redirection-' . $domain . '-new-from' ?>">
+                                        <span class="code">
+                                           <?php echo '@' . $domain ?>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <label for="<?php echo 'redirection-' . $domain . '-new-to' ?>">
+                                        <?php _e('vers :', OvhEmailAliases::TEXTDOMAIN) ?>
+                                    </label><br>
+                                    <textarea class="regular-text code"
+                                              rows="2"
+                                              name="<?php echo 'new[' . $domain . '][to]' ?>"
+                                              id="<?php echo 'redirection-' . $domain . '-new-to' ?>"></textarea>
+                                </td>
+                            </tr>
                         <?php endif ?>
                     <?php endforeach ?>
                 <?php endif ?>
