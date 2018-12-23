@@ -61,6 +61,7 @@ class OvhEmailAliases
 
     public function admin_menu()
     {
+        /*
         add_submenu_page(
             self::OPTION_PAGE_PARENT,
             __('Gestion des redirections email', self::TEXTDOMAIN),
@@ -69,6 +70,15 @@ class OvhEmailAliases
             self::OPTION_PAGE_SLUG,
             [$this, 'admin_page']
         );
+        */
+        add_menu_page(
+            __('Gestion des redirections email', self::TEXTDOMAIN),
+            __('Redirections email', self::TEXTDOMAIN),
+            apply_filters('ovh_email_aliases_capability', 'manage_options'),
+            self::OPTION_PAGE_SLUG,
+            [$this, 'admin_page']
+        );
+
     }
 
     public function admin_init()
@@ -368,17 +378,19 @@ class OvhEmailAliases
 
         $domains = [];
 
-        foreach ($raw as $domain => $redirections) {
-            if (is_wp_error($redirections)) {
-                $domains[$domain] = $redirections;
-            } else {
-                $domains[$domain] = [];
-                foreach ($redirections as $id => $redirection) {
-                    $from = $redirection['from'];
-                    if (!isset($domains[$domain][$from])) {
-                        $domains[$domain][$from] = [];
+        if ($raw) {
+            foreach ($raw as $domain => $redirections) {
+                if (is_wp_error($redirections)) {
+                    $domains[$domain] = $redirections;
+                } else {
+                    $domains[$domain] = [];
+                    foreach ($redirections as $id => $redirection) {
+                        $from = $redirection['from'];
+                        if (!isset($domains[$domain][$from])) {
+                            $domains[$domain][$from] = [];
+                        }
+                        $domains[$domain][$from][] = $redirection['to'];
                     }
-                    $domains[$domain][$from][] = $redirection['to'];
                 }
             }
         }
